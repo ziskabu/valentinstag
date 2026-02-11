@@ -3,9 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Für Philipp ❤️</title>
+<title>Für Philipp</title>
 
 <style>
+:root {
+    --accent: #7a1f2b;
+    --accent-light: #a63a50;
+    --bg: #f5f3ef;
+    --paper: #ffffff;
+    --text: #222;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,285 +21,28 @@
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #ff9eb5, #ffc3d1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
     height: 100vh;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-/* ---------------- Umschlag ---------------- */
-
-.envelope-wrapper {
-    position: relative;
-    width: 90vw;
-    max-width: 400px;
-    height: 250px;
-    perspective: 1000px;
-}
-
-.envelope {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: #ff4d6d;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.flap {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #e63956;
-    clip-path: polygon(0 0, 50% 60%, 100% 0);
-    transform-origin: top;
-    transition: transform 1s ease;
-    z-index: 3;
-}
-
-.envelope.open .flap {
-    transform: rotateX(180deg);
-}
-
-.address {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    top: 55%;
-    transform: translateY(-50%);
-    color: white;
-    font-weight: bold;
-    font-size: 1.2em;
-}
-
-.stamp {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 30px;
-}
-
-/* ---------------- Brief ---------------- */
-
-.letter {
-    position: absolute;
-    width: 90vw;
-    max-width: 420px;
-    height: 70vh;
-    background: white;
-    border-radius: 15px;
-    padding: 30px 20px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-    transform: translateY(100%);
-    transition: transform 1.2s ease;
+    color: var(--text);
     overflow: hidden;
 }
 
-.letter.show {
-    transform: translateY(-10%);
+/* Container */
+.container {
+    width: 100%;
+    max-width: 480px;
+    padding: 20px;
 }
 
-h2 {
-    color: #ff3366;
-    margin-bottom: 20px;
-}
-
-.buttons {
-    margin-top: 30px;
-    position: relative;
-    height: 150px;
-}
-
-button {
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.yes-btn {
-    background: #ff3366;
-    color: white;
-    border: 2px solid white;
-    margin-right: 10px;
-}
-
-.no-btn {
-    background: white;
-    color: #ff3366;
-    border: 2px solid #ff3366;
-    position: absolute;
-}
-
-/* ---------------- Herzen ---------------- */
-
-.heart {
-    position: fixed;
-    top: -10px;
-    font-size: 20px;
-    animation: fall linear forwards;
-    color: red;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(110vh);
-        opacity: 0;
-    }
-}
-
-/* ---------------- Kuss Animation ---------------- */
-
-.kiss-container {
-    margin-top: 40px;
-    animation: fadeIn 1s ease forwards;
-}
-
-.characters {
-    font-size: 60px;
-    animation: kissMove 1.5s infinite alternate ease-in-out;
-}
-
-@keyframes kissMove {
-    from { transform: translateX(-10px); }
-    to { transform: translateX(10px); }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.countdown {
-    margin-top: 20px;
-    font-weight: bold;
-    color: #ff3366;
-}
-
-.back-btn {
-    margin-top: 20px;
-    background: #ff4d6d;
-    color: white;
-    border: none;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="envelope-wrapper">
-    <div class="envelope" id="envelope" onclick="openEnvelope()">
-        <div class="flap"></div>
-        <div class="address">Philipp Seifert</div>
-        <div class="stamp">💌</div>
-    </div>
-</div>
-
-<div class="letter" id="letter">
-    <div id="letterContent">
-        <h2>Möchtest du mein Valentinstagsdate sein, Philipp?</h2>
-        <p>Liebevolle Grüße<br>Deine Verlobte Franzi ❤️</p>
-
-        <div class="buttons">
-            <button class="yes-btn" onclick="sayYes()">Ja, ich will</button>
-            <button class="no-btn" id="noBtn">Nein</button>
-        </div>
-    </div>
-</div>
-
-<script>
-
-/* Umschlag öffnen */
-function openEnvelope() {
-    document.getElementById("envelope").classList.add("open");
-    setTimeout(() => {
-        document.getElementById("letter").classList.add("show");
-    }, 600);
-}
-
-/* Nein springt */
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", function() {
-    const maxX = 250;
-    const maxY = 100;
-    noBtn.style.left = Math.random() * maxX + "px";
-    noBtn.style.top = Math.random() * maxY + "px";
-});
-
-/* Ja gedrückt */
-function sayYes() {
-
-    const letter = document.getElementById("letterContent");
-    letter.innerHTML = ""; // Brief wird geleert
-
-    startHearts();
-
-    letter.innerHTML = `
-        <div class="kiss-container">
-            <div class="characters">👩 ❤️ 👨 💋</div>
-            <p><strong>Vielen Dank für Deine freiwillige Antwort!<br>
-            Du machst mich damit überglücklich! Ich liebe dich!</strong></p>
-            <div class="countdown" id="countdown"></div>
-            <button class="back-btn" onclick="resetPage()">Brief wegpacken</button>
-        </div>
-    `;
-
-    startCountdown();
-}
-
-/* Herzen erzeugen */
-function startHearts() {
-    setInterval(() => {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML = "❤️";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 5000);
-    }, 300);
-}
-
-/* Countdown */
-function startCountdown() {
-    const countdownEl = document.getElementById("countdown");
-
-    const now = new Date();
-    let year = now.getFullYear();
-    let valentines = new Date(year, 1, 14);
-
-    if (now > valentines) {
-        valentines = new Date(year + 1, 1, 14);
-    }
-
-    const interval = setInterval(() => {
-        const now = new Date();
-        const diff = valentines - now;
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / 1000 / 60) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
-
-        countdownEl.innerHTML = 
-        `Countdown bis zum Valentinstag: ${days} Tage ${hours}h ${minutes}m ${seconds}s`;
-
-    }, 1000);
-}
-
-/* Reset */
-function resetPage() {
-    location.reload();
-}
-
-</script>
-
-</body>
-</html>
+/* Umschlag */
+.envelope {
+    width: 100%;
+    aspect-ratio: 16/10;
+    background: #e8e4de;
+    border-radius: 8px;
+    display: flex;
+    align-items: ce
