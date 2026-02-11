@@ -3,288 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Für Philipp</title>
+<title>Valentinstag 💙</title>
 
 <style>
-:root {
-    --accent: #7a1f2b;
-    --accent-light: #a63a50;
-    --bg: #f5f3ef;
-    --paper: #ffffff;
-    --text: #222;
+
+/* ---------------- Grundlayout ---------------- */
+
+:root{
+    --blue:#0d2a55;
+    --lightblue:#cfe8ff;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+body{
+    margin:0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background:var(--lightblue);
+    overflow:hidden;
 }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text);
-    overflow: hidden;
+/* zentriert alles mobilfreundlich */
+.center{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 
-/* Container */
-.container {
-    width: 100%;
-    max-width: 480px;
-    padding: 20px;
+/* ---------------- Umschlag ---------------- */
+
+#envelope{
+    width:90vw;
+    max-width:420px;
+    height:260px;
+    background:white;
+    border-radius:6px;
+    position:relative;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    cursor:pointer;
+    perspective:1000px;
 }
 
-/* Umschlag */
-.envelope {
-    width: 100%;
-    aspect-ratio: 16/10;
-    background: #e8e4de;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: opacity 0.6s ease;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+/* Umschlagklappe */
+.flap{
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background:white;
+    clip-path: polygon(0 0,100% 0,50% 55%);
+    border-bottom:2px solid #ddd;
+    transform-origin:top;
+    transition:transform 1s ease;
 }
 
-.envelope img {
-    width: 80px;
-    opacity: 0.8;
-}
-
-.address {
-    position: absolute;
-    bottom: 20px;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-
-/* Brief */
-.letter {
-    display: none;
-    background: var(--paper);
-    border-radius: 10px;
-    padding: 40px 25px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-    text-align: center;
-    animation: fadeIn 0.6s ease forwards;
-}
-
-h1 {
-    font-size: 1.4rem;
-    margin-bottom: 20px;
-    font-weight: 500;
-}
-
-p {
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-
-/* Buttons */
-.button-group {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    position: relative;
-    height: 60px;
-}
-
-button {
-    padding: 10px 18px;
-    font-size: 0.95rem;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.25s ease;
-    min-width: 120px;
-}
-
-.yes {
-    background: var(--accent);
-    color: white;
-    border: none;
-}
-
-.yes:hover {
-    background: var(--accent-light);
-}
-
-.no {
-    background: transparent;
-    border: 1.5px solid var(--accent);
-    color: var(--accent);
-    position: absolute;
-}
-
-/* Erfolg */
-.success {
-    animation: fadeIn 0.6s ease forwards;
-}
-
-.success img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-.countdown {
-    font-weight: 500;
-    margin-top: 10px;
-}
-
-.back {
-    margin-top: 20px;
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-}
-
-/* Herzen subtil */
-.heart {
-    position: fixed;
-    top: -10px;
-    font-size: 14px;
-    color: rgba(122,31,43,0.3);
-    animation: fall linear forwards;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(110vh);
-        opacity: 0;
-    }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 480px) {
-    .letter {
-        padding: 30px 20px;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <!-- Umschlag -->
-    <div class="envelope" id="envelope">
-        <!-- Lizenzfreie Grafik von undraw.co möglich -->
-        <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Brief Icon">
-        <div class="address">Philipp Seifert</div>
-    </div>
-
-    <!-- Brief -->
-    <div class="letter" id="letter">
-        <div id="content">
-            <h1>Möchtest du mein Valentinstagsdate sein, Philipp?</h1>
-            <p>Liebevolle Grüße<br>Deine Verlobte Franzi</p>
-
-            <div class="button-group" id="buttons">
-                <button class="yes" onclick="accept()">Ja, ich will</button>
-                <button class="no" id="noBtn">Nein</button>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<script>
-const envelope = document.getElementById("envelope");
-const letter = document.getElementById("letter");
-const content = document.getElementById("content");
-const noBtn = document.getElementById("noBtn");
-
-/* Öffnen */
-envelope.addEventListener("click", () => {
-    envelope.style.opacity = "0";
-    setTimeout(() => {
-        envelope.style.display = "none";
-        letter.style.display = "block";
-    }, 400);
-});
-
-/* Nein springt */
-noBtn.addEventListener("mouseenter", () => {
-    const parent = document.getElementById("buttons");
-    const maxX = parent.offsetWidth - noBtn.offsetWidth;
-    const maxY = parent.offsetHeight - noBtn.offsetHeight;
-
-    noBtn.style.left = Math.random() * maxX + "px";
-    noBtn.style.top = Math.random() * maxY + "px";
-});
-
-/* Ja gedrückt */
-function accept() {
-    content.innerHTML = "";
-
-    startHearts();
-
-    content.innerHTML = `
-        <div class="success">
-            <!-- Witziges lizenzfreies GIF – kannst du ersetzen -->
-            <img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" alt="Funny Kiss">
-            <p><strong>Vielen Dank für Deine freiwillige Antwort!  
-            Du machst mich damit überglücklich! Ich liebe dich!</strong></p>
-            <div class="countdown" id="countdown"></div>
-            <button class="back" onclick="reset()">Brief wegpacken</button>
-        </div>
-    `;
-
-    startCountdown();
-}
-
-/* Herzen subtil */
-function startHearts() {
-    setInterval(() => {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML = "❤";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (Math.random() * 4 + 3) + "s";
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 7000);
-    }, 600);
-}
-
-/* Countdown */
-function startCountdown() {
-    const el = document.getElementById("countdown");
-
-    const now = new Date();
-    let year = now.getFullYear();
-    let val = new Date(year, 1, 14);
-
-    if (now > val) val = new Date(year + 1, 1, 14);
-
-    setInterval(() => {
-        const diff = val - new Date();
-        const d = Math.floor(diff / (1000*60*60*24));
-        const h = Math.floor((diff / (1000*60*60)) % 24);
-        const m = Math.floor((diff / 1000 / 60) % 60);
-        const s = Math.floor((diff / 1000) % 60);
-
-        el.innerHTML = `Noch ${d} Tage ${h}h ${m}m ${s}s bis zum Valentinstag`;
-    }, 1000);
-}
-
-/* Reset */
-function reset() {
-    location.reload();
-}
-</script>
-
-</body>
-</html>
+/* Adresse */
+.address{
+    position:absolute;
+    left:20px;
