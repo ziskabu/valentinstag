@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Für Philipp ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #ffe6f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Umschlag */
+.envelope-container {
+    perspective: 1000px;
+}
+
+.envelope {
+    width: 350px;
+    height: 220px;
+    background: #ff4d6d;
+    position: relative;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 1s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.stamp {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 30px;
+}
+
+.letter {
+    display: none;
+    width: 380px;
+    min-height: 400px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    position: relative;
+}
+
+h2 {
+    color: #ff3366;
+}
+
+.buttons {
+    margin-top: 30px;
+    position: relative;
+    height: 120px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.yes-btn {
+    background: #ff3366;
+    color: white;
+    border: 2px solid white;
+    margin-right: 10px;
+}
+
+.no-btn {
+    background: white;
+    color: #ff3366;
+    border: 2px solid #ff3366;
+    position: absolute;
+}
+
+.success {
+    display: none;
+    margin-top: 20px;
+}
+
+.kiss {
+    font-size: 60px;
+    animation: kissAnim 1s infinite alternate;
+}
+
+@keyframes kissAnim {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
+}
+
+.back-btn {
+    margin-top: 20px;
+    background: #ff4d6d;
+    color: white;
+    border: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="envelope-container">
+    <div class="envelope" onclick="openLetter()" id="envelope">
+        <div>
+            Philipp Seifert
+        </div>
+        <div class="stamp">💌</div>
+    </div>
+</div>
+
+<div class="letter" id="letter">
+    <h2>Möchtest du mein Valentinstagsdate sein, Philipp?</h2>
+    <p>Liebevolle Grüße<br>Deine Verlobte Franzi ❤️</p>
+
+    <div class="buttons">
+        <button class="yes-btn" onclick="sayYes()">Ja, ich will</button>
+        <button class="no-btn" id="noBtn">Nein</button>
+    </div>
+
+    <div class="success" id="success">
+        <div class="kiss">👩‍❤️‍👨💋</div>
+        <p><strong>Vielen Dank für Deine freiwillige Antwort!<br>
+        Du machst mich damit überglücklich! Ich liebe dich!</strong></p>
+        <button class="back-btn" onclick="resetPage()">Brief wegpacken</button>
+    </div>
+</div>
+
+<script>
+function openLetter() {
+    document.getElementById("envelope").style.display = "none";
+    document.getElementById("letter").style.display = "block";
+}
+
+function sayYes() {
+    document.getElementById("success").style.display = "block";
+}
+
+function resetPage() {
+    document.getElementById("letter").style.display = "none";
+    document.getElementById("success").style.display = "none";
+    document.getElementById("envelope").style.display = "flex";
+}
+
+/* Nein-Button springt weg */
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseover", function() {
+    const letter = document.getElementById("letter");
+    const maxX = letter.clientWidth - noBtn.offsetWidth - 20;
+    const maxY = 100;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+});
+</script>
+
+</body>
+</html>
