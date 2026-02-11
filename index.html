@@ -61,3 +61,248 @@ body{
 .address{
     position:absolute;
     left:20px;
+    bottom:25px;
+    line-height:1.4em;
+    font-size:1rem;
+}
+
+/* Briefmarke */
+.stamp{
+    position:absolute;
+    right:18px;
+    top:18px;
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border:3px dashed #bbb;
+}
+
+/* Öffnen Animation */
+.open .flap{
+    transform:rotateX(180deg);
+}
+
+/* ---------------- Briefseite ---------------- */
+
+#letterPage{
+    position:fixed;
+    inset:0;
+    background:white;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+    transform:scale(.2);
+    opacity:0;
+    transition:all 1s ease;
+}
+
+#letterPage.show{
+    display:flex;
+    transform:scale(1);
+    opacity:1;
+}
+
+/* Frage */
+h1{
+    font-size:1.8rem;
+    margin-bottom:35px;
+    color:var(--blue);
+}
+
+/* Buttons */
+button{
+    font-size:1.1rem;
+    padding:14px 22px;
+    margin:12px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+/* JA */
+#yesBtn{
+    background:var(--blue);
+    color:white;
+    border:3px solid white;
+}
+
+/* NEIN */
+#noBtn{
+    background:white;
+    color:var(--blue);
+    border:3px solid var(--blue);
+    position:relative;
+}
+
+/* ---------------- Erfolg Seite ---------------- */
+
+#result{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+#result img{
+    width:220px;
+    margin-bottom:20px;
+}
+
+#countdown{
+    margin:18px 0;
+    font-size:1.2rem;
+    color:var(--blue);
+}
+
+#resetBtn{
+    background:var(--blue);
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Umschlag -->
+<div class="center" id="startScreen">
+    <div id="envelope">
+        <div class="flap"></div>
+
+        <img class="stamp"
+        src="https://upload.wikimedia.org/wikipedia/commons/3/3a/US_Stamp_1901_2c_Washington.jpg">
+
+        <div class="address">
+            <strong>An Philipp Seifert</strong><br>
+            unser gemütliches Zuhause<br>
+            München
+        </div>
+    </div>
+</div>
+
+<!-- Briefseite -->
+<div id="letterPage">
+
+    <div id="questionArea">
+        <h1>Möchtest du mein Valentinstagsdate sein?</h1>
+        <button id="yesBtn">Ja, ich will!</button><br>
+        <button id="noBtn">Nein, danke!</button>
+    </div>
+
+    <div id="result">
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdG15aTlkNzlhZTd3ZTk5aGt2aDI5b3Jyajk1cmhjamJiMmYwMXZmNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9A56kPXH16UqBKmdug/giphy.gif">
+
+        <h2>Vielen Dank für deine freiwillige Antwort.<br>Ich freue mich sehr und liebe dich!</h2>
+
+        <div id="countdownTitle">Countdown bis zum Valentinstag</div>
+        <div id="countdown"></div>
+
+        <button id="resetBtn">Brief wegpacken</button>
+    </div>
+
+</div>
+
+<script>
+
+/* Umschlag öffnen */
+
+const envelope = document.getElementById("envelope");
+const letterPage = document.getElementById("letterPage");
+
+envelope.addEventListener("click", ()=>{
+    envelope.classList.add("open");
+
+    setTimeout(()=>{
+        document.getElementById("startScreen").style.display="none";
+        letterPage.classList.add("show");
+    },900);
+});
+
+
+/* Nein Button springt weg */
+
+let noClicks=0;
+const noBtn=document.getElementById("noBtn");
+
+noBtn.addEventListener("click", ()=>{
+    if(noClicks<5){
+        const parent=letterPage.getBoundingClientRect();
+
+        const x=Math.random()*(parent.width-160);
+        const y=Math.random()*(parent.height-120);
+
+        noBtn.style.position="absolute";
+        noBtn.style.left=x+"px";
+        noBtn.style.top=y+"px";
+        noClicks++;
+    }else{
+        noBtn.style.display="none";
+    }
+});
+
+
+/* Ja Button */
+
+const yesBtn=document.getElementById("yesBtn");
+const result=document.getElementById("result");
+const questionArea=document.getElementById("questionArea");
+
+yesBtn.addEventListener("click",()=>{
+    questionArea.style.display="none";
+    result.style.display="flex";
+    startCountdown();
+});
+
+
+/* Countdown */
+
+function startCountdown(){
+
+    const countdown=document.getElementById("countdown");
+
+    function update(){
+        const now=new Date();
+
+        let year=now.getFullYear();
+        let valentines=new Date(year,1,14); // 14 Februar
+
+        if(now>valentines){
+            valentines=new Date(year+1,1,14);
+        }
+
+        const diff=valentines-now;
+
+        const days=Math.floor(diff/(1000*60*60*24));
+        const hours=Math.floor((diff/(1000*60*60))%24);
+        const minutes=Math.floor((diff/(1000*60))%60);
+        const seconds=Math.floor((diff/1000)%60);
+
+        countdown.innerHTML=
+        days+" Tage "+
+        hours+" Std "+
+        minutes+" Min "+
+        seconds+" Sek";
+    }
+
+    update();
+    setInterval(update,1000);
+}
+
+
+/* Reset */
+
+document.getElementById("resetBtn").addEventListener("click",()=>{
+    location.reload();
+});
+
+</script>
+
+</body>
+</html>
